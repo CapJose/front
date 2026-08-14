@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Retirar USDC</title>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js">
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      padding: 40px;
+    }
+
+    .card {
+      max-width: 500px;
+      margin: auto;
+      background: #1d1d1d;
+      padding: 30px;
+      border-radius: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #connectBtn {
+      background: #3375bb;
+      color: white;
+    }
+
+    #withdrawBtn {
+      background: #16a34a;
+      color: white;
+    }
+
+    #withdrawBtn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    #status {
+      margin-top: 20px;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>Donation Wallet</h2>
+
+  <p>
+    Retiro de USDC usando Trust Wallet
+  </p>
+
+  <div>
+    Wallet:
+    <strong id="wallet">
+      No conectada
+    </strong>
+  </div>
+
+  <br>
+
+  <div>
+    Owner:
+    <strong id="owner">
+      -
+    </strong>
+  </div>
+
+  <br>
+
+  <div>
+    Saldo contrato:
+    <strong id="balance">
+      -
+    </strong>
+    USDC
+  </div>
+
+  <button id="connectBtn">
+    Conectar Trust Wallet
+  </button>
+
+  <button
+    id="withdrawBtn"
+    disabled
+  >
+    Retirar todo
+  </button>
+
+  <div id="status"></div>
+
+</div>
+
+<script>
+
+const CONTRACT_ADDRESS =
+  "PON_AQUI_LA_DIRECCION_DE_TU_CONTRATO";
+
+const EXPECTED_CHAIN_ID = 1n;
+// Ethereum Mainnet
+
+const ABI = [
+
+  "function owner() view returns (address)",
+
+  "function getContractBalance() view returns (uint256)",
+
+  "function withdrawAll()",
+
+  "function withdrawDonations(address to,uint256 amount)",
+
+  "function usdcToken() view returns (address)"
+
+];
+
+let ethereumProvider = null;
+
+let provider = null;
+
+let signer = null;
+
+let contract = null;
+
+let connectedAddress = null;
+
+const connectBtn =
+  document.getElementById("connectBtn");
+
+const withdrawBtn =
+  document.getElementById("withdrawBtn");
+
+const walletEl =
+  document.getElementById("wallet");
+
+const ownerEl =
+  document.getElementById("owner");
+
+const balanceEl =
+  document.getElementById("balance");
+
+const statusEl =
+  document.getElementById("status");
+
+
+function status(message) {
+
+  console.log(message);
+
+  statusEl.textContent = message;
+
+}
+
+
+function shortAddress(address) {
+
+  return (
+    address.slice(0, 6) +
+    "..." +
+    address.slice(-4)
+  );
+
+}
+
+
+// ======================================================
+// BUSCAR TRUST WALLET
+// ======================================================
+
+function findTrustWalletProvider() {
+
+  console.log(
+    "window.trustwallet:",
+    window.trustwallet
+  );
+
+  console.log(
+    "window.ethereum:",
+    window.ethereum
+  );
+
+
+  // Trust Wallet moderno
+  if (
+    window.trustwallet &&
+    window.trustwallet.ethereum
+  ) {
+
+    console.log(
+      "✅ Trust Wallet encontrado por window.trustwallet.ethereum"
+    );
+
+    return window.trustwallet.ethereum;
+
+  }
+
+
+  // Algunas versiones
+  if (
+    window.ethereum &&
+    window.ethereum.isTrust
+  ) {
+
+    console.log(
+      "✅ Trust Wallet encontrado por isTrust"
+    );
+
+    return window.ethereum;
+
+  }
+
+
+  // Fallback
+  if (window.ethereum) {
+
+    console.warn(
+      "⚠️ Provider Ethereum encontrado, pero no puedo confirmar que sea Trust Wallet"
+    );
+
+    return window.ethereum;
+
+  }
+
+
+  return null;
+
+}
+
+
+// ======================================================
+// CAMBIAR A ETHEREUM MAINNET
+// ======================================================
+
+async function ensureCorrectNetwork() {
+
+  const network =
+    await provider.getNetwork();
+
+  console.log(
+    "Chain actual:",
+    network.chainId.toString()
+  );
+
+
+  if (
+    network.chainId === EXPECTED_CHAIN_ID
+  ) {
+
+    return;
+
+  }
+
+
+  status(
+    "Cambiando a Ethereum Mainnet..."
+  );
+
+
+  try {
+
+    await ethereumProvider.request({
+
+      method:
+        "wallet_switchEthereumChain",
+
+      params: [
+        {
+          chainId: "0x1"
+        }
+      ]
+
+    });
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Error cambiando red:",
+      error
+    );
+
+    throw new Error(
+      "Selecciona Ethereum Mainnet en Trust Wallet."
+    );
+
+  }
+
+
+  provider =
+    new ethers.BrowserProvider(
+      ethereumProvider
+    );
+
+}
+
+
+// ======================================================
+// CONECTAR
+// ======================================================
+
+async function connectTrustWallet() {
+
+  try {
+
+    connectBtn.disabled = true;
+
+    status(
+      "Buscando Trust Wallet..."
+    );
+
+
+    ethereumProvider =
+      findTrustWalletProvider();
+
+
+    if (!ethereumProvider) {
+
+      throw new Error(
+        "Trust Wallet no fue detectado. Instala o habilita la extensión."
+      );
+
+    }
+
+
+    status(
+      "Solicitando conexión..."
+    );
+
+
+    await ethereumProvider.request({
+
+      method: "eth_requestAccounts"
+
+    });
+
+
+    provider =
+      new ethers.BrowserProvider(
+        ethereumProvider
+      );
+
+
+    await ensureCorrectNetwork();
+
+
+    signer =
+      await provider.getSigner();
+
+
+    connectedAddress =
+      await signer.getAddress();
+
+
+    console.log(
+      "Wallet:",
+      connectedAddress
+    );
+
+
+    contract =
+      new ethers.Contract(
+        CONTRACT_ADDRESS,
+        ABI,
+        signer
+      );
+
+
+    // Verificar que realmente exista contrato
+    const code =
+      await provider.getCode(
+        CONTRACT_ADDRESS
+      );
+
+
+    if (
+      !code ||
+      code === "0x"
+    ) {
+
+      throw new Error(
+        "No existe contrato en esa dirección para la red seleccionada."
+      );
+
+    }
+
+
+    const owner =
+      await contract.owner();
+
+
+    const balance =
+      await contract
+        .getContractBalance();
+
+
+    console.log(
+      "Owner:",
+      owner
+    );
+
+    console.log(
+      "Balance:",
+      balance.toString()
+    );
+
+
+    walletEl.textContent =
+      shortAddress(
+        connectedAddress
+      );
+
+
+    ownerEl.textContent =
+      shortAddress(
+        owner
+      );
+
+
+    balanceEl.textContent =
+      ethers.formatUnits(
+        balance,
+        6
+      );
+
+
+    // ==================================================
+    // VALIDAR OWNER
+    // ==================================================
+
+    if (
+      connectedAddress.toLowerCase()
+      !==
+      owner.toLowerCase()
+    ) {
+
+      withdrawBtn.disabled = true;
+
+      throw new Error(
+        "La wallet conectada NO es el owner del contrato."
+      );
+
+    }
+
+
+    withdrawBtn.disabled = false;
+
+    connectBtn.textContent =
+      shortAddress(
+        connectedAddress
+      );
+
+
+    status(
+      "✅ Trust Wallet conectada. Eres el owner del contrato."
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    status(
+      "❌ " +
+      (
+        error.shortMessage ||
+        error.message ||
+        "Error conectando"
+      )
+    );
+
+
+    connectBtn.disabled = false;
+
+  }
+
+}
+
+
+// ======================================================
+// RETIRAR TODO
+// ======================================================
+
+async function withdrawAll() {
+
+  try {
+
+    if (
+      !contract ||
+      !signer
+    ) {
+
+      throw new Error(
+        "Primero conecta Trust Wallet."
+      );
+
+    }
+
+
+    withdrawBtn.disabled = true;
+
+
+    status(
+      "Verificando owner..."
+    );
+
+
+    const address =
+      await signer.getAddress();
+
+
+    const owner =
+      await contract.owner();
+
+
+    if (
+      address.toLowerCase()
+      !==
+      owner.toLowerCase()
+    ) {
+
+      throw new Error(
+        "Esta wallet no es el owner."
+      );
+
+    }
+
+
+    const balance =
+      await contract
+        .getContractBalance();
+
+
+    if (balance === 0n) {
+
+      throw new Error(
+        "El contrato no tiene USDC."
+      );
+
+    }
+
+
+    status(
+      "Simulando transacción..."
+    );
+
+
+    // Verificamos primero que no vaya a revertir
+    await contract
+      .withdrawAll
+      .staticCall();
+
+
+    status(
+      "Abriendo Trust Wallet para confirmar..."
+    );
+
+
+    // ==================================================
+    // ESTIMACIÓN DE GAS
+    // ==================================================
+
+    const estimatedGas =
+      await contract
+        .withdrawAll
+        .estimateGas();
+
+
+    console.log(
+      "Gas estimado:",
+      estimatedGas.toString()
+    );
+
+
+    // pequeño margen
+    const gasLimit =
+      estimatedGas * 120n / 100n;
+
+
+    // ==================================================
+    // ENVIAR
+    // ==================================================
+
+    const tx =
+      await contract.withdrawAll({
+
+        gasLimit
+
+      });
+
+
+    console.log(
+      "TX:",
+      tx.hash
+    );
+
+
+    status(
+      "⏳ Transacción enviada: " +
+      tx.hash
+    );
+
+
+    const receipt =
+      await tx.wait();
+
+
+    if (
+      !receipt ||
+      receipt.status !== 1
+    ) {
+
+      throw new Error(
+        "La transacción fue minada pero falló."
+      );
+
+    }
+
+
+    status(
+      "✅ USDC retirados correctamente. TX: " +
+      tx.hash
+    );
+
+
+    balanceEl.textContent =
+      "0";
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "WITHDRAW ERROR:",
+      error
+    );
+
+
+    if (
+      error.code ===
+      "ACTION_REJECTED"
+    ) {
+
+      status(
+        "❌ Rechazaste la transacción en Trust Wallet."
+      );
+
+    }
+
+    else {
+
+      status(
+        "❌ " +
+        (
+          error.shortMessage ||
+          error.reason ||
+          error.message ||
+          "No fue posible retirar."
+        )
+      );
+
+    }
+
+
+  }
+
+  finally {
+
+    withdrawBtn.disabled = false;
+
+  }
+
+}
+
+
+// ======================================================
+// EVENTOS
+// ======================================================
+
+connectBtn.addEventListener(
+  "click",
+  connectTrustWallet
+);
+
+
+withdrawBtn.addEventListener(
+  "click",
+  withdrawAll
+);
+
+
+// ======================================================
+// ACCOUNT CHANGED
+// NO RECARGAMOS LA PÁGINA
+// ======================================================
+
+if (window.ethereum) {
+
+  window.ethereum.on(
+    "accountsChanged",
+    async (accounts) => {
+
+      console.log(
+        "accountsChanged:",
+        accounts
+      );
+
+
+      if (!accounts.length) {
+
+        connectedAddress = null;
+
+        signer = null;
+
+        contract = null;
+
+        walletEl.textContent =
+          "No conectada";
+
+        withdrawBtn.disabled =
+          true;
+
+        connectBtn.disabled =
+          false;
+
+        connectBtn.textContent =
+          "Conectar Trust Wallet";
+
+        return;
+
+      }
+
+
+      // IMPORTANTE:
+      // NO location.reload()
+
+      await connectTrustWallet();
+
+    }
+  );
+
+
+  window.ethereum.on(
+    "chainChanged",
+    async (chainId) => {
+
+      console.log(
+        "chainChanged:",
+        chainId
+      );
+
+
+      // tampoco recargamos
+      provider = null;
+      signer = null;
+      contract = null;
+
+      connectBtn.disabled =
+        false;
+
+      withdrawBtn.disabled =
+        true;
+
+      status(
+        "La red cambió. Vuelve a conectar."
+      );
+
+    }
+  );
+
+}
+
+</script>
+
+</body>
+</html>
