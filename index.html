@@ -1,318 +1,450 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>Retirar USDC - Trust Wallet</title>
+<title>DonationWallet - Retirar USDC</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: #0d1117;
-            color: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .card {
-            width: 100%;
-            max-width: 600px;
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 20px;
-            padding: 30px;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 25px;
 
-        h1 {
-            margin-top: 0;
-            margin-bottom: 5px;
-        }
+    font-family: Arial, Helvetica, sans-serif;
 
-        .subtitle {
-            color: #8b949e;
-            margin-bottom: 25px;
-        }
+    background: #0d1117;
+    color: white;
+}
 
-        .info {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-        }
+.container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
 
-        .label {
-            color: #8b949e;
-            font-size: 13px;
-            margin-bottom: 6px;
-        }
+.card {
+    background: #161b22;
 
-        .value {
-            word-break: break-all;
-            font-family: monospace;
-        }
+    border: 1px solid #30363d;
+    border-radius: 18px;
 
-        .balance {
-            font-size: 28px;
-            font-weight: bold;
-        }
+    padding: 25px;
 
-        label {
-            display: block;
-            margin-top: 18px;
-            margin-bottom: 7px;
-        }
+    margin-bottom: 18px;
+}
 
-        input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #30363d;
-            background: #0d1117;
-            color: white;
-            font-size: 15px;
-            outline: none;
-        }
+h1 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
 
-        input:focus {
-            border-color: #2f81f7;
-        }
+.subtitle {
+    color: #8b949e;
+    margin-bottom: 25px;
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            margin-top: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.info {
+    background: #0d1117;
 
-        button:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
+    border: 1px solid #30363d;
+    border-radius: 10px;
 
-        #connectBtn {
-            background: #3375bb;
-            color: white;
-        }
+    padding: 13px;
 
-        #withdrawBtn {
-            background: #238636;
-            color: white;
-        }
+    margin-bottom: 10px;
+}
 
-        #withdrawAllBtn {
-            background: #da3633;
-            color: white;
-        }
+.label {
+    font-size: 12px;
+    color: #8b949e;
 
-        #maxBtn {
-            width: auto;
-            padding: 8px 14px;
-            background: #30363d;
-            color: white;
-            font-size: 13px;
-        }
+    margin-bottom: 6px;
+}
 
-        #refreshBtn {
-            background: #30363d;
-            color: white;
-        }
+.value {
+    font-family: monospace;
 
-        #status {
-            margin-top: 20px;
-            padding: 15px;
-            min-height: 55px;
-            border-radius: 10px;
-            border: 1px solid #30363d;
-            background: #0d1117;
-            line-height: 1.5;
-            word-break: break-word;
-        }
+    word-break: break-all;
+}
 
-        .success {
-            color: #3fb950;
-        }
+.balance {
+    font-size: 27px;
+    font-weight: bold;
+}
 
-        .error {
-            color: #f85149;
-        }
+input {
+    width: 100%;
 
-        .warning {
-            color: #d29922;
-        }
+    margin-top: 7px;
+    margin-bottom: 12px;
 
-        a {
-            color: #58a6ff;
-        }
+    padding: 14px;
 
-        .small {
-            margin-top: 15px;
-            color: #8b949e;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-    </style>
+    border-radius: 10px;
+
+    border: 1px solid #30363d;
+
+    background: #0d1117;
+    color: white;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+input:focus {
+    border-color: #2f81f7;
+}
+
+label {
+    display: block;
+
+    margin-top: 15px;
+
+    color: #c9d1d9;
+}
+
+button {
+    width: 100%;
+
+    border: 0;
+    border-radius: 10px;
+
+    padding: 14px;
+
+    margin-top: 12px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.primary {
+    background: #3375bb;
+    color: white;
+}
+
+.success-btn {
+    background: #238636;
+    color: white;
+}
+
+.danger {
+    background: #da3633;
+    color: white;
+}
+
+.secondary {
+    background: #30363d;
+    color: white;
+}
+
+#status {
+    margin-top: 15px;
+
+    padding: 15px;
+
+    background: #0d1117;
+
+    border: 1px solid #30363d;
+    border-radius: 10px;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+}
+
+.success {
+    color: #3fb950;
+}
+
+.error {
+    color: #f85149;
+}
+
+.warning {
+    color: #d29922;
+}
+
+.diagnostic-line {
+    margin: 7px 0;
+
+    font-family: monospace;
+    font-size: 13px;
+
+    word-break: break-all;
+}
+
+.good {
+    color: #3fb950;
+}
+
+.bad {
+    color: #f85149;
+}
+
+.warn {
+    color: #d29922;
+}
+
+a {
+    color: #58a6ff;
+}
+
+.small {
+    font-size: 12px;
+
+    color: #8b949e;
+
+    margin-top: 15px;
+
+    line-height: 1.5;
+}
+
+hr {
+    border: none;
+
+    border-top: 1px solid #30363d;
+
+    margin: 20px 0;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-    <h1>💵 Donation Wallet</h1>
+    <div class="card">
 
-    <div class="subtitle">
-        Retiro de USDC mediante Trust Wallet
-    </div>
+        <h1>💵 DonationWallet</h1>
 
-
-    <div class="info">
-        <div class="label">
-            Wallet conectada
+        <div class="subtitle">
+            Retiro de USDC usando Trust Wallet
         </div>
 
-        <div
-            id="wallet"
-            class="value"
-        >
-            No conectada
-        </div>
-    </div>
 
+        <div class="info">
 
-    <div class="info">
-        <div class="label">
-            Owner del contrato
-        </div>
+            <div class="label">
+                Contrato
+            </div>
 
-        <div
-            id="owner"
-            class="value"
-        >
-            -
-        </div>
-    </div>
-
-
-    <div class="info">
-        <div class="label">
-            Contrato
-        </div>
-
-        <div
-            id="contractAddress"
-            class="value"
-        >
-            -
-        </div>
-    </div>
-
-
-    <div class="info">
-        <div class="label">
-            Saldo disponible
-        </div>
-
-        <div class="balance">
-
-            <span id="balance">
+            <div
+                id="contractEl"
+                class="value"
+            >
                 -
-            </span>
-
-            USDC
+            </div>
 
         </div>
+
+
+        <div class="info">
+
+            <div class="label">
+                Wallet conectada
+            </div>
+
+            <div
+                id="walletEl"
+                class="value"
+            >
+                No conectada
+            </div>
+
+        </div>
+
+
+        <div class="info">
+
+            <div class="label">
+                Owner
+            </div>
+
+            <div
+                id="ownerEl"
+                class="value"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="info">
+
+            <div class="label">
+                Token
+            </div>
+
+            <div
+                id="tokenEl"
+                class="value"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="info">
+
+            <div class="label">
+                Saldo del contrato
+            </div>
+
+            <div class="balance">
+
+                <span id="balanceEl">
+                    -
+                </span>
+
+                <span id="symbolEl">
+                    USDC
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="connectBtn"
+            class="primary"
+        >
+            Conectar Trust Wallet
+        </button>
+
+
+        <button
+            id="refreshBtn"
+            class="secondary"
+        >
+            Actualizar datos
+        </button>
+
+
+        <hr>
+
+
+        <label>
+            Wallet destino
+        </label>
+
+        <input
+            id="destinationInput"
+            type="text"
+            placeholder="0x..."
+            autocomplete="off"
+            spellcheck="false"
+        >
+
+
+        <label>
+            Cantidad USDC
+        </label>
+
+        <input
+            id="amountInput"
+            type="text"
+            inputmode="decimal"
+            placeholder="Ejemplo: 5.50"
+            autocomplete="off"
+        >
+
+
+        <button
+            id="maxBtn"
+            class="secondary"
+        >
+            Usar saldo máximo
+        </button>
+
+
+        <button
+            id="withdrawBtn"
+            class="success-btn"
+            disabled
+        >
+            Enviar USDC a wallet destino
+        </button>
+
+
+        <button
+            id="withdrawAllBtn"
+            class="danger"
+            disabled
+        >
+            Retirar TODO al Owner
+        </button>
+
+
+        <button
+            id="diagnosticBtn"
+            class="secondary"
+        >
+            Ejecutar diagnóstico
+        </button>
+
+
+        <div id="status">
+            Inicializando...
+        </div>
+
+
+        <div class="small">
+
+            Trust Wallet únicamente autoriza la transacción.
+
+            Las consultas y simulaciones utilizan un RPC
+            independiente para evitar el problema de
+            ethereum.twnodes.com.
+
+        </div>
+
     </div>
 
 
-    <button id="connectBtn">
-        Conectar Trust Wallet
-    </button>
-
-
-    <button id="refreshBtn">
-        Actualizar saldo
-    </button>
-
-
-    <label for="destination">
-        Wallet destino
-    </label>
-
-    <input
-        id="destination"
-        type="text"
-        placeholder="0x..."
-        autocomplete="off"
+    <div
+        id="diagnosticCard"
+        class="card"
+        style="display:none"
     >
 
+        <h3>Diagnóstico</h3>
 
-    <label for="amount">
-        Cantidad de USDC
-    </label>
+        <div id="diagnosticOutput"></div>
 
-    <input
-        id="amount"
-        type="text"
-        inputmode="decimal"
-        placeholder="Ejemplo: 5.50"
-        autocomplete="off"
-    >
-
-
-    <button id="maxBtn">
-        Usar máximo
-    </button>
-
-
-    <button
-        id="withdrawBtn"
-        disabled
-    >
-        Enviar USDC a wallet destino
-    </button>
-
-
-    <button
-        id="withdrawAllBtn"
-        disabled
-    >
-        Retirar TODO al Owner
-    </button>
-
-
-    <div id="status">
-        Inicializando...
-    </div>
-
-
-    <div class="small">
-        Las lecturas blockchain se realizan mediante un RPC independiente.
-        Trust Wallet solamente se utiliza para autorizar y enviar la transacción.
     </div>
 
 </div>
 
 
 <script>
+
+"use strict";
+
 
 // ======================================================
 // CONFIGURACIÓN
@@ -323,21 +455,15 @@ const CONTRACT_ADDRESS =
 
 
 // ======================================================
-// IMPORTANTE
+// COLOCA AQUÍ TU RPC DE ETHEREUM MAINNET
 // ======================================================
 //
-// Pon aquí un RPC DE ETHEREUM MAINNET que funcione.
+// Ejemplo:
 //
-// Ejemplo de estructura:
+// const READ_RPC_URL =
+//     "https://eth-mainnet.g.alchemy.com/v2/TU_KEY";
 //
-// https://eth-mainnet.g.alchemy.com/v2/TU_API_KEY
-//
-// o:
-//
-// https://mainnet.infura.io/v3/TU_API_KEY
-//
-// Para producción es preferible que estas lecturas
-// pasen por tu backend para no exponer una API key.
+// NO coloques PRIVATE_KEY aquí.
 //
 // ======================================================
 
@@ -345,8 +471,16 @@ const READ_RPC_URL =
     "https://mainnet.infura.io/v3/2299d5a9f0e248bca4873f673fc68cfd";
 
 
+// Ethereum Mainnet
+
 const EXPECTED_CHAIN_ID =
     1n;
+
+
+// USDC OFICIAL ETHEREUM MAINNET
+
+const OFFICIAL_USDC =
+    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 
 
 // ======================================================
@@ -361,9 +495,19 @@ const CONTRACT_ABI = [
 
     "function getContractBalance() view returns (uint256)",
 
+    "function withdrawAll()",
+
     "function withdrawDonations(address to,uint256 amount)",
 
-    "function withdrawAll()",
+    "error InvalidUSDCAddress()",
+
+    "error InsufficientBalance(uint256 available,uint256 required)",
+
+    "error ZeroAddress()",
+
+    "error NothingToWithdraw()",
+
+    "error OwnableUnauthorizedAccount(address account)",
 
     "event FundsWithdrawn(address indexed owner,uint256 amount)"
 
@@ -371,157 +515,193 @@ const CONTRACT_ABI = [
 
 
 // ======================================================
-// ABI ERC20
+// ABI USDC
 // ======================================================
 
 const ERC20_ABI = [
+
+    "function balanceOf(address account) view returns (uint256)",
+
+    "function transfer(address to,uint256 amount) returns (bool)",
 
     "function decimals() view returns (uint8)",
 
     "function symbol() view returns (string)",
 
-    "function balanceOf(address account) view returns (uint256)"
+    "function name() view returns (string)"
 
 ];
 
 
 // ======================================================
-// PROVIDERS
+// INTERFACES
 // ======================================================
 
-// Provider interno de Trust Wallet.
-// SOLO se usa para wallet.
-
-let walletEthereum =
-    null;
-
-
-// BrowserProvider.
-// SOLO para signer.
-
-let walletProvider =
-    null;
+const donationInterface =
+    new ethers.Interface(
+        CONTRACT_ABI
+    );
 
 
-// Provider independiente.
-//
-// ESTE hace:
-//
-// eth_getCode
-// eth_call
-// eth_estimateGas
-// receipts
-// balances
-//
-// NO Trust Wallet.
+const erc20Interface =
+    new ethers.Interface(
+        ERC20_ABI
+    );
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
 
 let rpcProvider =
     null;
 
 
-// ======================================================
-// CONTRATOS
-// ======================================================
-
 let readContract =
     null;
+
 
 let tokenContract =
     null;
 
 
-// ======================================================
-// DATOS
-// ======================================================
-
-let signer =
+let walletEthereum =
     null;
+
+
+let walletProvider =
+    null;
+
 
 let connectedAddress =
     null;
 
+
 let contractOwner =
     null;
 
-let currentContractBalance =
-    0n;
 
-let USDC_DECIMALS =
+let tokenAddress =
+    null;
+
+
+let tokenDecimals =
     6;
+
 
 let tokenSymbol =
     "USDC";
 
 
-// ======================================================
-// CONTROL ESTADO
-// ======================================================
+let contractBalance =
+    0n;
+
 
 let isConnecting =
     false;
 
-let isWithdrawing =
+
+let isSending =
     false;
 
 
+let listenersInstalled =
+    false;
+
+
+// EIP-6963
+
+const discoveredProviders =
+    [];
+
+
 // ======================================================
-// HTML
+// DOM
 // ======================================================
+
+const contractEl =
+    document.getElementById(
+        "contractEl"
+    );
+
 
 const walletEl =
     document.getElementById(
-        "wallet"
+        "walletEl"
     );
+
 
 const ownerEl =
     document.getElementById(
-        "owner"
+        "ownerEl"
     );
 
-const contractAddressEl =
+
+const tokenEl =
     document.getElementById(
-        "contractAddress"
+        "tokenEl"
     );
+
 
 const balanceEl =
     document.getElementById(
-        "balance"
+        "balanceEl"
     );
 
-const destinationEl =
+
+const symbolEl =
     document.getElementById(
-        "destination"
+        "symbolEl"
     );
 
-const amountEl =
+
+const destinationInput =
     document.getElementById(
-        "amount"
+        "destinationInput"
     );
+
+
+const amountInput =
+    document.getElementById(
+        "amountInput"
+    );
+
 
 const connectBtn =
     document.getElementById(
         "connectBtn"
     );
 
+
 const refreshBtn =
     document.getElementById(
         "refreshBtn"
     );
+
 
 const maxBtn =
     document.getElementById(
         "maxBtn"
     );
 
+
 const withdrawBtn =
     document.getElementById(
         "withdrawBtn"
     );
 
+
 const withdrawAllBtn =
     document.getElementById(
         "withdrawAllBtn"
     );
+
+
+const diagnosticBtn =
+    document.getElementById(
+        "diagnosticBtn"
+    );
+
 
 const statusEl =
     document.getElementById(
@@ -529,8 +709,20 @@ const statusEl =
     );
 
 
+const diagnosticCard =
+    document.getElementById(
+        "diagnosticCard"
+    );
+
+
+const diagnosticOutput =
+    document.getElementById(
+        "diagnosticOutput"
+    );
+
+
 // ======================================================
-// STATUS
+// UTILIDADES
 // ======================================================
 
 function setStatus(
@@ -563,9 +755,165 @@ function setStatusHTML(
 }
 
 
+function shortAddress(address) {
+
+    if (!address) {
+        return "-";
+    }
+
+    return (
+        address.slice(0, 6) +
+        "..." +
+        address.slice(-4)
+    );
+
+}
+
+
+function addressesEqual(a, b) {
+
+    if (!a || !b) {
+        return false;
+    }
+
+    return (
+        a.toLowerCase() ===
+        b.toLowerCase()
+    );
+
+}
+
+
+function diagnostic(
+    label,
+    value,
+    type = ""
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.className =
+        "diagnostic-line " +
+        type;
+
+    div.textContent =
+        `${label}: ${value}`;
+
+    diagnosticOutput.appendChild(
+        div
+    );
+
+}
+
+
 // ======================================================
 // ERROR
 // ======================================================
+
+function extractRpcData(error) {
+
+    return (
+
+        error?.data ||
+
+        error?.error?.data ||
+
+        error?.info?.error?.data ||
+
+        error?.info?.data ||
+
+        null
+
+    );
+
+}
+
+
+function decodeContractError(error) {
+
+    const data =
+        extractRpcData(
+            error
+        );
+
+
+    if (
+        typeof data === "string" &&
+        data.startsWith("0x") &&
+        data.length >= 10
+    ) {
+
+        try {
+
+            const parsed =
+                donationInterface.parseError(
+                    data
+                );
+
+
+            if (parsed) {
+
+                switch (
+                    parsed.name
+                ) {
+
+                    case "OwnableUnauthorizedAccount":
+
+                        return (
+                            "La wallet no es el owner: " +
+                            parsed.args[0]
+                        );
+
+
+                    case "NothingToWithdraw":
+
+                        return (
+                            "El contrato no tiene fondos para retirar."
+                        );
+
+
+                    case "ZeroAddress":
+
+                        return (
+                            "La wallet destino es la dirección cero."
+                        );
+
+
+                    case "InsufficientBalance":
+
+                        return (
+                            "Saldo insuficiente. Disponible raw: " +
+                            parsed.args[0].toString() +
+                            ", requerido raw: " +
+                            parsed.args[1].toString()
+                        );
+
+
+                    default:
+
+                        return (
+                            `${parsed.name}`
+                        );
+
+                }
+
+            }
+
+        }
+        catch {
+            // continuar
+        }
+
+    }
+
+
+    return null;
+
+}
+
 
 function getErrorMessage(error) {
 
@@ -576,9 +924,7 @@ function getErrorMessage(error) {
 
 
     if (!error) {
-
         return "Error desconocido.";
-
     }
 
 
@@ -587,64 +933,39 @@ function getErrorMessage(error) {
         error.code === "ACTION_REJECTED"
     ) {
 
-        return "Operación rechazada en Trust Wallet.";
+        return (
+            "Operación rechazada en Trust Wallet."
+        );
 
     }
 
 
-    const nestedMessage =
+    const decoded =
+        decodeContractError(
+            error
+        );
+
+
+    if (decoded) {
+        return decoded;
+    }
+
+
+    return (
 
         error?.info?.error?.message ||
 
         error?.error?.message ||
 
-        error?.data?.message;
+        error?.data?.message ||
 
+        error?.shortMessage ||
 
-    return (
+        error?.reason ||
 
-        nestedMessage ||
-
-        error.shortMessage ||
-
-        error.reason ||
-
-        error.message ||
+        error?.message ||
 
         "Error desconocido."
-
-    );
-
-}
-
-
-// ======================================================
-// DIRECCIÓN CORTA
-// ======================================================
-
-function shortAddress(address) {
-
-    if (!address) {
-        return "-";
-    }
-
-
-    return (
-
-        address.slice(
-            0,
-            6
-        )
-
-        +
-
-        "..."
-
-        +
-
-        address.slice(
-            -4
-        )
 
     );
 
@@ -655,7 +976,7 @@ function shortAddress(address) {
 // VALIDAR CONFIGURACIÓN
 // ======================================================
 
-function validateConfiguration() {
+function validateConfig() {
 
     if (
         !ethers.isAddress(
@@ -672,13 +993,15 @@ function validateConfiguration() {
 
     if (
         !READ_RPC_URL ||
+        READ_RPC_URL ===
+            "TU_RPC_ETHEREUM_MAINNET" ||
         READ_RPC_URL.includes(
-            "PON_AQUI"
+            "TU_RPC"
         )
     ) {
 
         throw new Error(
-            "Debes configurar READ_RPC_URL con un RPC de Ethereum Mainnet."
+            "Debes configurar READ_RPC_URL."
         );
 
     }
@@ -687,23 +1010,21 @@ function validateConfiguration() {
 
 
 // ======================================================
-// INICIALIZAR RPC DE LECTURA
+// RPC INDEPENDIENTE
 // ======================================================
 
-async function initializeReadProvider() {
+async function initializeRpc() {
 
-    validateConfiguration();
+    validateConfig();
 
 
     if (rpcProvider) {
-
-        return;
-
+        return rpcProvider;
     }
 
 
-    console.log(
-        "🌐 Inicializando RPC independiente..."
+    setStatus(
+        "Conectando al RPC de Ethereum..."
     );
 
 
@@ -712,10 +1033,17 @@ async function initializeReadProvider() {
 
             READ_RPC_URL,
 
-            1,
+            {
+                name:
+                    "mainnet",
+
+                chainId:
+                    1
+            },
 
             {
-                staticNetwork: true
+                staticNetwork:
+                    true
             }
 
         );
@@ -725,20 +1053,13 @@ async function initializeReadProvider() {
         await rpcProvider.getNetwork();
 
 
-    console.log(
-        "RPC chainId:",
-        network.chainId.toString()
-    );
-
-
     if (
-        network.chainId !==
-        EXPECTED_CHAIN_ID
+        network.chainId !== 1n
     ) {
 
         throw new Error(
 
-            "READ_RPC_URL no está conectado a Ethereum Mainnet. ChainId recibido: "
+            "El RPC no está conectado a Ethereum Mainnet. Chain ID: "
 
             +
 
@@ -750,123 +1071,49 @@ async function initializeReadProvider() {
 
 
     console.log(
-        "✅ RPC independiente conectado"
+        "✅ RPC Ethereum conectado"
     );
+
+
+    return rpcProvider;
 
 }
 
 
 // ======================================================
-// DETECTAR TRUST WALLET
+// LEER DATOS DEL CONTRATO
 // ======================================================
 
-function findTrustWalletProvider() {
+async function loadContractData() {
 
-    console.log(
-        "Buscando Trust Wallet..."
-    );
-
-
-    console.log(
-        "window.trustwallet:",
-        window.trustwallet
-    );
-
-
-    console.log(
-        "window.ethereum:",
-        window.ethereum
-    );
+    await initializeRpc();
 
 
     // ==============================================
-    // Trust Wallet específico
+    // BYTECODE
     // ==============================================
 
-    if (
-        window.trustwallet &&
-        window.trustwallet.ethereum
-    ) {
-
-        console.log(
-            "✅ Trust Wallet: window.trustwallet.ethereum"
+    const code =
+        await rpcProvider.getCode(
+            CONTRACT_ADDRESS
         );
 
-        return window.trustwallet.ethereum;
-
-    }
-
-
-    // ==============================================
-    // Providers múltiples
-    // ==============================================
 
     if (
-        window.ethereum &&
-        Array.isArray(
-            window.ethereum.providers
-        )
+        !code ||
+        code === "0x"
     ) {
 
-        const found =
-            window.ethereum.providers.find(
-
-                p =>
-
-                    p.isTrust === true ||
-
-                    p.isTrustWallet === true
-
-            );
-
-
-        if (found) {
-
-            console.log(
-                "✅ Trust Wallet encontrado en ethereum.providers"
-            );
-
-            return found;
-
-        }
-
-    }
-
-
-    // ==============================================
-    // window.ethereum
-    // ==============================================
-
-    if (
-        window.ethereum &&
-        (
-            window.ethereum.isTrust === true ||
-            window.ethereum.isTrustWallet === true
-        )
-    ) {
-
-        console.log(
-            "✅ Trust Wallet: window.ethereum"
+        throw new Error(
+            "No existe contrato en CONTRACT_ADDRESS en Ethereum Mainnet."
         );
 
-        return window.ethereum;
-
     }
 
 
-    return null;
-
-}
-
-
-// ======================================================
-// CREAR CONTRATO DE LECTURA
-// ======================================================
-
-async function initializeReadContract() {
-
-    await initializeReadProvider();
-
+    // ==============================================
+    // CONTRATO
+    // ==============================================
 
     if (!readContract) {
 
@@ -883,122 +1130,53 @@ async function initializeReadContract() {
 
     }
 
-}
-
-
-// ======================================================
-// CARGAR DATOS CONTRATO
-// ======================================================
-
-async function loadContractData() {
-
-    await initializeReadContract();
-
-
-    console.log(
-        "======================================"
-    );
-
-    console.log(
-        "📡 CONSULTANDO DONATION WALLET"
-    );
-
-
-    // ==============================================
-    // ETH_GETCODE
-    //
-    // IMPORTANTE:
-    // USA rpcProvider
-    // NO TRUST WALLET
-    // ==============================================
-
-    const code =
-        await rpcProvider.getCode(
-            CONTRACT_ADDRESS
-        );
-
-
-    if (
-        !code ||
-        code === "0x"
-    ) {
-
-        throw new Error(
-
-            "No existe un contrato desplegado en "
-
-            +
-
-            CONTRACT_ADDRESS
-
-            +
-
-            " en Ethereum Mainnet."
-
-        );
-
-    }
-
-
-    console.log(
-        "✅ Contrato encontrado"
-    );
-
-
-    // ==============================================
-    // DATOS
-    // ==============================================
 
     const [
+        ownerRaw,
+        tokenRaw
+    ] =
+        await Promise.all([
 
-        owner,
+            readContract.owner(),
 
-        tokenAddress,
+            readContract.usdcToken()
 
-        balance
-
-    ] = await Promise.all([
-
-        readContract.owner(),
-
-        readContract.usdcToken(),
-
-        readContract.getContractBalance()
-
-    ]);
+        ]);
 
 
     contractOwner =
         ethers.getAddress(
-            owner
+            ownerRaw
         );
 
 
-    currentContractBalance =
-        balance;
-
-
-    console.log(
-        "Owner:",
-        contractOwner
-    );
-
-
-    console.log(
-        "Token:",
-        tokenAddress
-    );
-
-
-    console.log(
-        "Balance raw:",
-        balance.toString()
-    );
+    tokenAddress =
+        ethers.getAddress(
+            tokenRaw
+        );
 
 
     // ==============================================
-    // TOKEN
+    // VALIDAR TOKEN
     // ==============================================
+
+    const tokenCode =
+        await rpcProvider.getCode(
+            tokenAddress
+        );
+
+
+    if (
+        !tokenCode ||
+        tokenCode === "0x"
+    ) {
+
+        throw new Error(
+            "usdcToken() apunta a una dirección sin contrato."
+        );
+
+    }
+
 
     tokenContract =
         new ethers.Contract(
@@ -1012,75 +1190,74 @@ async function loadContractData() {
         );
 
 
-    try {
+    // ==============================================
+    // TOKEN INFO
+    // ==============================================
 
-        const decimals =
-            await tokenContract.decimals();
+    const [
+        decimalsRaw,
+        symbolRaw,
+        directBalance,
+        getterBalance
+    ] =
+        await Promise.all([
+
+            tokenContract
+                .decimals(),
+
+            tokenContract
+                .symbol()
+                .catch(
+                    () => "TOKEN"
+                ),
+
+            tokenContract
+                .balanceOf(
+                    CONTRACT_ADDRESS
+                ),
+
+            readContract
+                .getContractBalance()
+
+        ]);
 
 
-        USDC_DECIMALS =
-            Number(
-                decimals
-            );
-
-    }
-
-    catch (error) {
-
-        console.warn(
-            "No se pudo obtener decimals(). Usando 6.",
-            error
+    tokenDecimals =
+        Number(
+            decimalsRaw
         );
 
 
-        USDC_DECIMALS =
-            6;
-
-    }
+    tokenSymbol =
+        symbolRaw;
 
 
-    try {
-
-        tokenSymbol =
-            await tokenContract.symbol();
-
-    }
-
-    catch {
-
-        tokenSymbol =
-            "USDC";
-
-    }
+    // Usamos balanceOf directo.
+    contractBalance =
+        directBalance;
 
 
-    const formattedBalance =
-        ethers.formatUnits(
+    // ==============================================
+    // CONSISTENCIA
+    // ==============================================
 
-            balance,
+    if (
+        directBalance !==
+        getterBalance
+    ) {
 
-            USDC_DECIMALS
-
+        throw new Error(
+            "getContractBalance() y balanceOf() no coinciden."
         );
 
-
-    console.log(
-        "Balance:",
-        formattedBalance,
-        tokenSymbol
-    );
-
-
-    console.log(
-        "======================================"
-    );
+    }
 
 
     // ==============================================
     // UI
     // ==============================================
 
-    contractAddressEl.textContent =
+    contractEl.textContent =
         CONTRACT_ADDRESS;
 
 
@@ -1088,18 +1265,31 @@ async function loadContractData() {
         contractOwner;
 
 
+    tokenEl.textContent =
+        `${tokenSymbol} — ${tokenAddress}`;
+
+
     balanceEl.textContent =
-        formattedBalance;
+        ethers.formatUnits(
+
+            contractBalance,
+
+            tokenDecimals
+
+        );
 
 
-    // Por defecto poner owner destino
+    symbolEl.textContent =
+        tokenSymbol;
+
+
     if (
-        !destinationEl
+        !destinationInput
             .value
             .trim()
     ) {
 
-        destinationEl.value =
+        destinationInput.value =
             contractOwner;
 
     }
@@ -1113,11 +1303,10 @@ async function loadContractData() {
         owner:
             contractOwner,
 
-        balance,
+        tokenAddress,
 
-        formattedBalance,
-
-        tokenSymbol
+        balance:
+            contractBalance
 
     };
 
@@ -1125,39 +1314,203 @@ async function loadContractData() {
 
 
 // ======================================================
-// ACTUALIZAR BOTONES
+// EIP-6963
 // ======================================================
 
-function updateButtons() {
+window.addEventListener(
 
-    const isOwner =
+    "eip6963:announceProvider",
 
-        connectedAddress &&
+    event => {
 
-        contractOwner &&
-
-        connectedAddress.toLowerCase()
-        ===
-        contractOwner.toLowerCase();
+        const detail =
+            event.detail;
 
 
-    const enabled =
-        Boolean(isOwner) &&
-        !isWithdrawing;
+        if (
+            !detail ||
+            !detail.provider
+        ) {
+
+            return;
+
+        }
 
 
-    withdrawBtn.disabled =
-        !enabled;
+        const exists =
+            discoveredProviders.some(
+
+                item =>
+                    item.provider ===
+                    detail.provider
+
+            );
 
 
-    withdrawAllBtn.disabled =
-        !enabled;
+        if (!exists) {
+
+            discoveredProviders.push(
+                detail
+            );
+
+        }
+
+    }
+
+);
+
+
+function requestEip6963Providers() {
+
+    window.dispatchEvent(
+
+        new Event(
+            "eip6963:requestProvider"
+        )
+
+    );
 
 }
 
 
 // ======================================================
-// CHAIN DE TRUST WALLET
+// ENCONTRAR TRUST WALLET
+// ======================================================
+
+function findTrustWalletProvider() {
+
+    // EIP-6963 primero
+
+    const trust6963 =
+        discoveredProviders.find(
+
+            item => {
+
+                const name =
+                    (
+                        item?.info?.name ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const rdns =
+                    (
+                        item?.info?.rdns ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                return (
+
+                    name.includes(
+                        "trust"
+                    )
+
+                    ||
+
+                    rdns.includes(
+                        "trust"
+                    )
+
+                    ||
+
+                    item.provider
+                        ?.isTrust ===
+                        true
+
+                    ||
+
+                    item.provider
+                        ?.isTrustWallet ===
+                        true
+
+                );
+
+            }
+
+        );
+
+
+    if (trust6963) {
+
+        console.log(
+            "✅ Trust Wallet encontrado mediante EIP-6963"
+        );
+
+        return trust6963.provider;
+
+    }
+
+
+    // Trust Wallet legacy
+
+    if (
+        window.trustwallet
+            ?.ethereum
+    ) {
+
+        return (
+            window.trustwallet.ethereum
+        );
+
+    }
+
+
+    // Providers múltiples
+
+    if (
+        Array.isArray(
+            window.ethereum
+                ?.providers
+        )
+    ) {
+
+        const trust =
+            window.ethereum.providers.find(
+
+                provider =>
+                    provider.isTrust ===
+                        true
+
+                    ||
+
+                    provider.isTrustWallet ===
+                        true
+
+            );
+
+
+        if (trust) {
+            return trust;
+        }
+
+    }
+
+
+    // window.ethereum
+
+    if (
+        window.ethereum &&
+        (
+            window.ethereum.isTrust ||
+            window.ethereum.isTrustWallet
+        )
+    ) {
+
+        return window.ethereum;
+
+    }
+
+
+    return null;
+
+}
+
+
+// ======================================================
+// NETWORK WALLET
 // ======================================================
 
 async function ensureWalletMainnet() {
@@ -1165,35 +1518,27 @@ async function ensureWalletMainnet() {
     if (!walletEthereum) {
 
         throw new Error(
-            "Trust Wallet no está disponible."
+            "Trust Wallet no está conectada."
         );
 
     }
 
 
-    const chainIdHex =
-        await walletEthereum.request({
-
-            method:
-                "eth_chainId"
-
-        });
-
-
-    let chainId =
+    let chain =
         BigInt(
-            chainIdHex
+
+            await walletEthereum.request({
+
+                method:
+                    "eth_chainId"
+
+            })
+
         );
 
 
-    console.log(
-        "Trust Wallet chain:",
-        chainId.toString()
-    );
-
-
     if (
-        chainId ===
+        chain ===
         EXPECTED_CHAIN_ID
     ) {
 
@@ -1225,28 +1570,26 @@ async function ensureWalletMainnet() {
     });
 
 
-    const newChain =
-        await walletEthereum.request({
-
-            method:
-                "eth_chainId"
-
-        });
-
-
-    chainId =
+    chain =
         BigInt(
-            newChain
+
+            await walletEthereum.request({
+
+                method:
+                    "eth_chainId"
+
+            })
+
         );
 
 
     if (
-        chainId !==
+        chain !==
         EXPECTED_CHAIN_ID
     ) {
 
         throw new Error(
-            "Trust Wallet no está conectado a Ethereum Mainnet."
+            "Trust Wallet no está en Ethereum Mainnet."
         );
 
     }
@@ -1255,19 +1598,44 @@ async function ensureWalletMainnet() {
 
 
 // ======================================================
-// CONECTAR
+// PERMISOS UI
+// ======================================================
+
+function updateButtons() {
+
+    const ownerOk =
+        addressesEqual(
+
+            connectedAddress,
+
+            contractOwner
+
+        );
+
+
+    const enabled =
+        ownerOk &&
+        !isSending;
+
+
+    withdrawBtn.disabled =
+        !enabled;
+
+
+    withdrawAllBtn.disabled =
+        !enabled;
+
+}
+
+
+// ======================================================
+// CONECTAR TRUST WALLET
 // ======================================================
 
 async function connectTrustWallet() {
 
     if (isConnecting) {
-
-        console.log(
-            "Conexión ya en proceso."
-        );
-
         return;
-
     }
 
 
@@ -1281,27 +1649,23 @@ async function connectTrustWallet() {
             true;
 
 
-        // ==========================================
-        // RPC DE LECTURA PRIMERO
-        // ==========================================
-
-        setStatus(
-            "Comprobando conexión Ethereum..."
-        );
-
-
-        await initializeReadProvider();
-
+        // Primero contrato
 
         await loadContractData();
 
 
-        // ==========================================
-        // TRUST WALLET
-        // ==========================================
+        requestEip6963Providers();
 
-        setStatus(
-            "Buscando Trust Wallet..."
+
+        // pequeño ciclo únicamente para permitir
+        // que providers EIP-6963 se anuncien
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    100
+                )
         );
 
 
@@ -1312,15 +1676,11 @@ async function connectTrustWallet() {
         if (!walletEthereum) {
 
             throw new Error(
-                "Trust Wallet no fue detectado."
+                "No se detectó Trust Wallet."
             );
 
         }
 
-
-        // ==========================================
-        // SOLICITAR CUENTA
-        // ==========================================
 
         setStatus(
             "Solicitando conexión a Trust Wallet..."
@@ -1342,7 +1702,7 @@ async function connectTrustWallet() {
         ) {
 
             throw new Error(
-                "No se seleccionó ninguna cuenta."
+                "Trust Wallet no devolvió ninguna cuenta."
             );
 
         }
@@ -1354,24 +1714,12 @@ async function connectTrustWallet() {
             );
 
 
-        console.log(
-            "Wallet:",
-            connectedAddress
-        );
-
-
-        // ==========================================
-        // RED
-        // ==========================================
-
         await ensureWalletMainnet();
 
 
-        // ==========================================
-        // BROWSER PROVIDER
-        //
-        // SOLO SIGNER
-        // ==========================================
+        // BrowserProvider únicamente para representar
+        // la conexión con la wallet.
+        // Las lecturas NO pasan por este provider.
 
         walletProvider =
             new ethers.BrowserProvider(
@@ -1379,31 +1727,18 @@ async function connectTrustWallet() {
             );
 
 
-        signer =
-            await walletProvider.getSigner();
-
-
         walletEl.textContent =
             connectedAddress;
 
 
-        // ==========================================
-        // OWNER
-        // ==========================================
-
-        if (
-            !contractOwner
-        ) {
-
-            await loadContractData();
-
-        }
+        installWalletListeners();
 
 
         if (
-            connectedAddress.toLowerCase()
-            !==
-            contractOwner.toLowerCase()
+            !addressesEqual(
+                connectedAddress,
+                contractOwner
+            )
         ) {
 
             updateButtons();
@@ -1411,7 +1746,7 @@ async function connectTrustWallet() {
 
             throw new Error(
 
-                "La wallet conectada NO es el owner. Owner requerido: "
+                "Esta wallet no es el owner. Owner requerido: "
 
                 +
 
@@ -1433,7 +1768,7 @@ async function connectTrustWallet() {
 
 
         setStatus(
-            "✅ Trust Wallet conectada. Eres el owner del contrato.",
+            "✅ Trust Wallet conectada. Eres el owner.",
             "success"
         );
 
@@ -1441,16 +1776,15 @@ async function connectTrustWallet() {
 
     catch (error) {
 
-        console.error(
-            "CONNECT ERROR:",
-            error
-        );
-
-
         setStatus(
+
             "❌ " +
-            getErrorMessage(error),
+            getErrorMessage(
+                error
+            ),
+
             "error"
+
         );
 
 
@@ -1477,13 +1811,13 @@ async function handleAccountsChanged(
     accounts
 ) {
 
+    console.log(
+        "accountsChanged:",
+        accounts
+    );
+
+
     try {
-
-        console.log(
-            "accountsChanged:",
-            accounts
-        );
-
 
         if (
             !accounts ||
@@ -1491,12 +1825,6 @@ async function handleAccountsChanged(
         ) {
 
             connectedAddress =
-                null;
-
-            signer =
-                null;
-
-            walletProvider =
                 null;
 
 
@@ -1526,29 +1854,26 @@ async function handleAccountsChanged(
         }
 
 
-        const address =
+        const nextAddress =
             ethers.getAddress(
                 accounts[0]
             );
 
 
-        // ==========================================
-        // MISMA CUENTA
-        //
-        // NO HACER NADA
-        // ==========================================
+        // MUY IMPORTANTE:
+        // si Trust Wallet emite la misma dirección,
+        // no hacemos nada.
 
         if (
-            connectedAddress &&
-            connectedAddress.toLowerCase()
-            ===
-            address.toLowerCase()
+            addressesEqual(
+                nextAddress,
+                connectedAddress
+            )
         ) {
 
             console.log(
-                "ℹ️ accountsChanged recibió la misma cuenta. Ignorado."
+                "ℹ️ Misma cuenta. Evento ignorado."
             );
-
 
             return;
 
@@ -1556,39 +1881,12 @@ async function handleAccountsChanged(
 
 
         connectedAddress =
-            address;
+            nextAddress;
 
 
         walletEl.textContent =
-            address;
+            connectedAddress;
 
-
-        // ==========================================
-        // RECONSTRUIR SIGNER
-        //
-        // SIN eth_requestAccounts
-        // ==========================================
-
-        if (walletEthereum) {
-
-            walletProvider =
-                new ethers.BrowserProvider(
-                    walletEthereum
-                );
-
-
-            signer =
-                await walletProvider
-                    .getSigner();
-
-        }
-
-
-        // ==========================================
-        // LECTURAS
-        //
-        // RPC EXTERNO
-        // ==========================================
 
         await loadContractData();
 
@@ -1597,10 +1895,10 @@ async function handleAccountsChanged(
 
 
         if (
-            contractOwner &&
-            connectedAddress.toLowerCase()
-            ===
-            contractOwner.toLowerCase()
+            addressesEqual(
+                connectedAddress,
+                contractOwner
+            )
         ) {
 
             connectBtn.textContent =
@@ -1611,7 +1909,7 @@ async function handleAccountsChanged(
 
 
             setStatus(
-                "✅ Cuenta actualizada. Eres el owner.",
+                "✅ Cuenta actualizada. Es el owner.",
                 "success"
             );
 
@@ -1620,7 +1918,7 @@ async function handleAccountsChanged(
         else {
 
             setStatus(
-                "❌ La nueva cuenta no es el owner.",
+                "❌ La cuenta seleccionada no es el owner.",
                 "error"
             );
 
@@ -1630,16 +1928,15 @@ async function handleAccountsChanged(
 
     catch (error) {
 
-        console.error(
-            "ACCOUNTS CHANGED ERROR:",
-            error
-        );
-
-
         setStatus(
+
             "❌ " +
-            getErrorMessage(error),
+            getErrorMessage(
+                error
+            ),
+
             "error"
+
         );
 
     }
@@ -1655,80 +1952,154 @@ async function handleChainChanged(
     chainIdHex
 ) {
 
-    try {
+    console.log(
+        "chainChanged:",
+        chainIdHex
+    );
 
-        console.log(
-            "chainChanged:",
+
+    const chainId =
+        BigInt(
             chainIdHex
         );
 
 
-        const chainId =
-            BigInt(
-                chainIdHex
+    if (
+        chainId !== 1n
+    ) {
+
+        withdrawBtn.disabled =
+            true;
+
+
+        withdrawAllBtn.disabled =
+            true;
+
+
+        setStatus(
+            "⚠️ Selecciona Ethereum Mainnet en Trust Wallet.",
+            "warning"
+        );
+
+
+        return;
+
+    }
+
+
+    await loadContractData();
+
+
+    updateButtons();
+
+
+    setStatus(
+        "✅ Ethereum Mainnet activa.",
+        "success"
+    );
+
+}
+
+
+// ======================================================
+// LISTENERS UNA SOLA VEZ
+// ======================================================
+
+function installWalletListeners() {
+
+    if (
+        listenersInstalled ||
+        !walletEthereum
+    ) {
+
+        return;
+
+    }
+
+
+    walletEthereum.on(
+
+        "accountsChanged",
+
+        handleAccountsChanged
+
+    );
+
+
+    walletEthereum.on(
+
+        "chainChanged",
+
+        handleChainChanged
+
+    );
+
+
+    listenersInstalled =
+        true;
+
+
+    console.log(
+        "✅ Wallet listeners instalados"
+    );
+
+}
+
+
+// ======================================================
+// DIAGNÓSTICO COMPLETO
+// ======================================================
+
+async function runDiagnostic() {
+
+    diagnosticCard.style.display =
+        "block";
+
+
+    diagnosticOutput.innerHTML =
+        "";
+
+
+    try {
+
+        diagnostic(
+            "Inicio",
+            new Date().toLocaleString(),
+            "good"
+        );
+
+
+        await initializeRpc();
+
+
+        // ==========================================
+        // CONTRACT CODE
+        // ==========================================
+
+        const code =
+            await rpcProvider.getCode(
+                CONTRACT_ADDRESS
             );
 
 
+        diagnostic(
+            "Contrato tiene bytecode",
+            code !== "0x"
+                ? "SÍ"
+                : "NO",
+            code !== "0x"
+                ? "good"
+                : "bad"
+        );
+
+
         if (
-            chainId !==
-            EXPECTED_CHAIN_ID
+            code === "0x"
         ) {
 
-            withdrawBtn.disabled =
-                true;
-
-            withdrawAllBtn.disabled =
-                true;
-
-
-            setStatus(
-                "⚠️ Trust Wallet cambió de red. Selecciona Ethereum Mainnet.",
-                "warning"
+            throw new Error(
+                "El contrato no existe en Mainnet."
             );
-
-
-            return;
-
-        }
-
-
-        // NO recargar página
-        // NO eth_requestAccounts
-
-
-        const accounts =
-            await walletEthereum.request({
-
-                method:
-                    "eth_accounts"
-
-            });
-
-
-        if (
-            accounts &&
-            accounts.length > 0
-        ) {
-
-            connectedAddress =
-                ethers.getAddress(
-                    accounts[0]
-                );
-
-
-            walletEl.textContent =
-                connectedAddress;
-
-
-            walletProvider =
-                new ethers.BrowserProvider(
-                    walletEthereum
-                );
-
-
-            signer =
-                await walletProvider
-                    .getSigner();
 
         }
 
@@ -1736,64 +2107,377 @@ async function handleChainChanged(
         await loadContractData();
 
 
-        updateButtons();
+        // ==========================================
+        // OWNER
+        // ==========================================
 
-
-        setStatus(
-            "✅ Ethereum Mainnet activa.",
-            "success"
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "CHAIN CHANGED ERROR:",
-            error
+        diagnostic(
+            "Owner",
+            contractOwner,
+            "good"
         );
 
 
-        setStatus(
-            "❌ " +
-            getErrorMessage(error),
-            "error"
+        diagnostic(
+            "Wallet conectada",
+            connectedAddress ||
+                "NO CONECTADA",
+            connectedAddress
+                ? "good"
+                : "warn"
         );
 
-    }
 
-}
+        const isOwner =
+            addressesEqual(
 
+                connectedAddress,
 
-// ======================================================
-// MAX
-// ======================================================
-
-async function useMax() {
-
-    try {
-
-        const data =
-            await loadContractData();
-
-
-        amountEl.value =
-            ethers.formatUnits(
-
-                data.balance,
-
-                USDC_DECIMALS
+                contractOwner
 
             );
 
+
+        diagnostic(
+            "Wallet = Owner",
+            isOwner
+                ? "SÍ"
+                : "NO",
+            isOwner
+                ? "good"
+                : "bad"
+        );
+
+
+        // ==========================================
+        // TOKEN
+        // ==========================================
+
+        diagnostic(
+            "Token configurado",
+            tokenAddress,
+            "good"
+        );
+
+
+        const official =
+            addressesEqual(
+
+                tokenAddress,
+
+                OFFICIAL_USDC
+
+            );
+
+
+        diagnostic(
+            "USDC oficial Ethereum",
+            official
+                ? "SÍ"
+                : "NO",
+            official
+                ? "good"
+                : "bad"
+        );
+
+
+        diagnostic(
+            "Símbolo",
+            tokenSymbol,
+            tokenSymbol === "USDC"
+                ? "good"
+                : "warn"
+        );
+
+
+        diagnostic(
+            "Decimales",
+            tokenDecimals.toString(),
+            tokenDecimals === 6
+                ? "good"
+                : "warn"
+        );
+
+
+        diagnostic(
+            "Saldo raw",
+            contractBalance.toString(),
+            "good"
+        );
+
+
+        diagnostic(
+            "Saldo",
+            ethers.formatUnits(
+
+                contractBalance,
+
+                tokenDecimals
+
+            ) +
+            " " +
+            tokenSymbol,
+
+            "good"
+        );
+
+
+        // ==========================================
+        // ETH PARA GAS
+        // ==========================================
+
+        if (connectedAddress) {
+
+            const ethBalance =
+                await rpcProvider.getBalance(
+                    connectedAddress
+                );
+
+
+            diagnostic(
+                "ETH para gas",
+                ethers.formatEther(
+                    ethBalance
+                ) +
+                " ETH",
+                ethBalance > 0n
+                    ? "good"
+                    : "bad"
+            );
+
+        }
+
+
+        // ==========================================
+        // SIMULAR TRANSFER DIRECTAMENTE DESDE CONTRATO
+        //
+        // Esto NO mueve fondos.
+        // eth_call solamente simula.
+        // ==========================================
+
+        if (
+            contractBalance > 0n
+        ) {
+
+            const transferData =
+                erc20Interface
+                    .encodeFunctionData(
+
+                        "transfer",
+
+                        [
+
+                            contractOwner,
+
+                            contractBalance
+
+                        ]
+
+                    );
+
+
+            try {
+
+                const result =
+                    await rpcProvider.call({
+
+                        from:
+                            CONTRACT_ADDRESS,
+
+                        to:
+                            tokenAddress,
+
+                        data:
+                            transferData
+
+                    });
+
+
+                diagnostic(
+                    "Simulación USDC transfer()",
+                    "CORRECTA",
+                    "good"
+                );
+
+
+                diagnostic(
+                    "Resultado transfer",
+                    result,
+                    "good"
+                );
+
+            }
+
+            catch (error) {
+
+                diagnostic(
+                    "Simulación USDC transfer()",
+                    "FALLÓ",
+                    "bad"
+                );
+
+
+                diagnostic(
+                    "Error transfer",
+                    getErrorMessage(
+                        error
+                    ),
+                    "bad"
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // WITHDRAW ALL
+        // ==========================================
+
+        if (
+            connectedAddress &&
+            isOwner &&
+            contractBalance > 0n
+        ) {
+
+            const withdrawAllData =
+                donationInterface
+                    .encodeFunctionData(
+
+                        "withdrawAll",
+
+                        []
+
+                    );
+
+
+            try {
+
+                await rpcProvider.call({
+
+                    from:
+                        connectedAddress,
+
+                    to:
+                        CONTRACT_ADDRESS,
+
+                    data:
+                        withdrawAllData
+
+                });
+
+
+                diagnostic(
+                    "Simulación withdrawAll()",
+                    "CORRECTA",
+                    "good"
+                );
+
+            }
+
+            catch (error) {
+
+                diagnostic(
+                    "Simulación withdrawAll()",
+                    "FALLÓ",
+                    "bad"
+                );
+
+
+                diagnostic(
+                    "Error withdrawAll",
+                    getErrorMessage(
+                        error
+                    ),
+                    "bad"
+                );
+
+            }
+
+
+            // ======================================
+            // WITHDRAW DONATIONS
+            // ======================================
+
+            const withdrawPartialData =
+                donationInterface
+                    .encodeFunctionData(
+
+                        "withdrawDonations",
+
+                        [
+
+                            contractOwner,
+
+                            contractBalance
+
+                        ]
+
+                    );
+
+
+            try {
+
+                await rpcProvider.call({
+
+                    from:
+                        connectedAddress,
+
+                    to:
+                        CONTRACT_ADDRESS,
+
+                    data:
+                        withdrawPartialData
+
+                });
+
+
+                diagnostic(
+                    "Simulación withdrawDonations()",
+                    "CORRECTA",
+                    "good"
+                );
+
+            }
+
+            catch (error) {
+
+                diagnostic(
+                    "Simulación withdrawDonations()",
+                    "FALLÓ",
+                    "bad"
+                );
+
+
+                diagnostic(
+                    "Error withdrawDonations",
+                    getErrorMessage(
+                        error
+                    ),
+                    "bad"
+                );
+
+            }
+
+        }
+
+
+        diagnostic(
+            "Diagnóstico",
+            "FINALIZADO",
+            "good"
+        );
+
     }
 
     catch (error) {
 
-        setStatus(
-            "❌ " +
-            getErrorMessage(error),
-            "error"
+        diagnostic(
+            "ERROR",
+            getErrorMessage(
+                error
+            ),
+            "bad"
         );
 
     }
@@ -1802,142 +2486,24 @@ async function useMax() {
 
 
 // ======================================================
-// GENERAR DATA DE LA TRANSACCIÓN
+// VALIDAR ANTES DE RETIRAR
 // ======================================================
 
-function createTransactionData(
-    functionName,
-    args = []
-) {
+async function validateWithdrawalBase() {
 
-    const iface =
-        new ethers.Interface(
-            CONTRACT_ABI
-        );
-
-
-    return iface.encodeFunctionData(
-
-        functionName,
-
-        args
-
-    );
-
-}
-
-
-// ======================================================
-// SIMULAR Y ESTIMAR GAS
-// ======================================================
-
-async function prepareTransaction(
-    data
-) {
-
-    if (
-        !connectedAddress
-    ) {
+    if (!walletEthereum) {
 
         throw new Error(
-            "Wallet no conectada."
+            "Primero conecta Trust Wallet."
         );
 
     }
 
 
-    await initializeReadProvider();
-
-
-    // ==============================================
-    // STATIC CALL
-    //
-    // RPC EXTERNO
-    // ==============================================
-
-    console.log(
-        "🔎 Simulando..."
-    );
-
-
-    await rpcProvider.call({
-
-        from:
-            connectedAddress,
-
-        to:
-            CONTRACT_ADDRESS,
-
-        data
-
-    });
-
-
-    console.log(
-        "✅ Simulación correcta"
-    );
-
-
-    // ==============================================
-    // GAS
-    // ==============================================
-
-    const estimatedGas =
-        await rpcProvider
-            .estimateGas({
-
-                from:
-                    connectedAddress,
-
-                to:
-                    CONTRACT_ADDRESS,
-
-                data
-
-            });
-
-
-    console.log(
-        "Gas estimado:",
-        estimatedGas.toString()
-    );
-
-
-    // 20% margen
-
-    const gasLimit =
-
-        estimatedGas *
-        120n /
-        100n;
-
-
-    console.log(
-        "Gas limit:",
-        gasLimit.toString()
-    );
-
-
-    return gasLimit;
-
-}
-
-
-// ======================================================
-// ENVIAR CON TRUST WALLET
-// ======================================================
-
-async function sendWithTrustWallet(
-    data,
-    gasLimit
-) {
-
-    if (
-        !walletEthereum
-    ) {
+    if (!connectedAddress) {
 
         throw new Error(
-            "Trust Wallet no está conectada."
+            "No hay wallet conectada."
         );
 
     }
@@ -1946,12 +2512,84 @@ async function sendWithTrustWallet(
     await ensureWalletMainnet();
 
 
-    // ==============================================
-    // AQUÍ TRUST WALLET SOLO RECIBE
-    // LA TRANSACCIÓN FINAL
-    // ==============================================
+    await loadContractData();
 
-    const transaction = {
+
+    if (
+        !addressesEqual(
+            connectedAddress,
+            contractOwner
+        )
+    ) {
+
+        throw new Error(
+            "Solo el owner puede retirar."
+        );
+
+    }
+
+
+    // Protección importante:
+    // Estamos esperando USDC oficial Ethereum.
+
+    if (
+        !addressesEqual(
+            tokenAddress,
+            OFFICIAL_USDC
+        )
+    ) {
+
+        throw new Error(
+
+            "El contrato NO está configurado con el USDC oficial de Ethereum. "
+
+            +
+
+            "Token configurado: "
+
+            +
+
+            tokenAddress
+
+        );
+
+    }
+
+
+    if (
+        contractBalance <= 0n
+    ) {
+
+        throw new Error(
+            "El contrato no tiene USDC."
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// PREPARAR TRANSACCIÓN
+// ======================================================
+
+async function prepareTransaction(
+    functionName,
+    args
+) {
+
+    const data =
+        donationInterface
+            .encodeFunctionData(
+
+                functionName,
+
+                args
+
+            );
+
+
+    const request = {
 
         from:
             connectedAddress,
@@ -1962,7 +2600,106 @@ async function sendWithTrustWallet(
         data,
 
         value:
+            0n
+
+    };
+
+
+    // ==============================================
+    // SIMULAR
+    // ==============================================
+
+    try {
+
+        await rpcProvider.call(
+            request
+        );
+
+
+        console.log(
+            `✅ ${functionName} simulada correctamente`
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            `${functionName} simulation error:`,
+            error
+        );
+
+
+        throw new Error(
+
+            `${functionName} sería rechazada por el contrato: `
+
+            +
+
+            getErrorMessage(
+                error
+            )
+
+        );
+
+    }
+
+
+    // ==============================================
+    // ESTIMAR GAS
+    // ==============================================
+
+    const estimatedGas =
+        await rpcProvider
+            .estimateGas(
+                request
+            );
+
+
+    const gasLimit =
+
+        estimatedGas *
+        130n /
+        100n;
+
+
+    return {
+
+        data,
+
+        estimatedGas,
+
+        gasLimit
+
+    };
+
+}
+
+
+// ======================================================
+// ENVIAR TRANSACCIÓN CON TRUST WALLET
+// ======================================================
+
+async function sendTransaction(
+    data,
+    gasLimit
+) {
+
+    await ensureWalletMainnet();
+
+
+    const transaction = {
+
+        from:
+            connectedAddress,
+
+        to:
+            CONTRACT_ADDRESS,
+
+        value:
             "0x0",
+
+        data,
 
         gas:
             ethers.toQuantity(
@@ -1973,42 +2710,39 @@ async function sendWithTrustWallet(
 
 
     console.log(
-        "TX para Trust Wallet:",
+        "Transacción enviada a Trust Wallet:",
         transaction
     );
 
 
-    const txHash =
-        await walletEthereum.request({
+    return await walletEthereum.request({
 
-            method:
-                "eth_sendTransaction",
+        method:
+            "eth_sendTransaction",
 
-            params: [
+        params: [
+            transaction
+        ]
 
-                transaction
-
-            ]
-
-        });
-
-
-    return txHash;
+    });
 
 }
 
 
 // ======================================================
-// ESPERAR TRANSACCIÓN
+// ESPERAR CONFIRMACIÓN
 // ======================================================
 
-async function waitTransaction(
+async function waitForTransaction(
     txHash
 ) {
 
     setStatusHTML(
 
-        `⏳ Transacción enviada.<br><br>
+        `
+        ⏳ Transacción enviada.
+
+        <br><br>
 
         <a
             href="https://etherscan.io/tx/${txHash}"
@@ -2020,12 +2754,12 @@ async function waitTransaction(
 
         <br><br>
 
-        Esperando confirmación...`
+        Esperando confirmación...
+        `
 
     );
 
 
-    // RPC EXTERNO
     const receipt =
         await rpcProvider
             .waitForTransaction(
@@ -2036,15 +2770,14 @@ async function waitTransaction(
     if (!receipt) {
 
         throw new Error(
-            "No se recibió confirmación de la transacción."
+            "No se recibió el receipt."
         );
 
     }
 
 
     if (
-        receipt.status !==
-        1
+        receipt.status !== 1
     ) {
 
         throw new Error(
@@ -2060,70 +2793,46 @@ async function waitTransaction(
 
 
 // ======================================================
-// RETIRAR CANTIDAD ESPECÍFICA
+// RETIRO PARCIAL
 // ======================================================
 
-async function withdrawToAddress() {
+async function withdrawPartial() {
 
-    if (isWithdrawing) {
+    if (isSending) {
         return;
     }
 
 
     try {
 
-        isWithdrawing =
+        isSending =
             true;
 
 
         updateButtons();
 
 
-        if (
-            !connectedAddress ||
-            !walletEthereum
-        ) {
-
-            throw new Error(
-                "Primero conecta Trust Wallet."
-            );
-
-        }
+        setStatus(
+            "Validando retiro..."
+        );
 
 
-        // ==========================================
-        // OWNER
-        // ==========================================
-
-        await loadContractData();
-
-
-        if (
-            connectedAddress.toLowerCase()
-            !==
-            contractOwner.toLowerCase()
-        ) {
-
-            throw new Error(
-                "Solo el owner puede retirar."
-            );
-
-        }
+        await validateWithdrawalBase();
 
 
         // ==========================================
         // DESTINO
         // ==========================================
 
-        const destination =
-            destinationEl
+        const destinationRaw =
+            destinationInput
                 .value
                 .trim();
 
 
         if (
             !ethers.isAddress(
-                destination
+                destinationRaw
             )
         ) {
 
@@ -2134,19 +2843,19 @@ async function withdrawToAddress() {
         }
 
 
-        const normalizedDestination =
+        const destination =
             ethers.getAddress(
-                destination
+                destinationRaw
             );
 
 
         if (
-            normalizedDestination ===
+            destination ===
             ethers.ZeroAddress
         ) {
 
             throw new Error(
-                "No puedes enviar a la dirección cero."
+                "No puedes usar la dirección cero."
             );
 
         }
@@ -2156,16 +2865,16 @@ async function withdrawToAddress() {
         // CANTIDAD
         // ==========================================
 
-        const amountText =
-            amountEl
+        const amountRaw =
+            amountInput
                 .value
                 .trim();
 
 
-        if (!amountText) {
+        if (!amountRaw) {
 
             throw new Error(
-                "Ingresa la cantidad de USDC."
+                "Ingresa una cantidad."
             );
 
         }
@@ -2179,9 +2888,9 @@ async function withdrawToAddress() {
             amount =
                 ethers.parseUnits(
 
-                    amountText,
+                    amountRaw,
 
-                    USDC_DECIMALS
+                    tokenDecimals
 
                 );
 
@@ -2201,24 +2910,15 @@ async function withdrawToAddress() {
         ) {
 
             throw new Error(
-                "La cantidad debe ser mayor a cero."
+                "La cantidad debe ser mayor que cero."
             );
 
         }
 
 
-        // ==========================================
-        // SALDO
-        // ==========================================
-
-        const balance =
-            await readContract
-                .getContractBalance();
-
-
         if (
             amount >
-            balance
+            contractBalance
         ) {
 
             throw new Error(
@@ -2229,9 +2929,9 @@ async function withdrawToAddress() {
 
                 ethers.formatUnits(
 
-                    balance,
+                    contractBalance,
 
-                    USDC_DECIMALS
+                    tokenDecimals
 
                 )
 
@@ -2244,52 +2944,23 @@ async function withdrawToAddress() {
         }
 
 
-        console.log(
-            "======================================"
-        );
-
-        console.log(
-            "💸 RETIRO PARCIAL"
-        );
-
-        console.log(
-            "Owner:",
-            connectedAddress
-        );
-
-        console.log(
-            "Destino:",
-            normalizedDestination
-        );
-
-        console.log(
-            "Cantidad:",
-            amountText,
-            "USDC"
-        );
-
-        console.log(
-            "Raw:",
-            amount.toString()
-        );
-
-        console.log(
-            "======================================"
-        );
-
-
         // ==========================================
-        // DATA
+        // PREPARAR
         // ==========================================
 
-        const data =
-            createTransactionData(
+        setStatus(
+            "🔎 Simulando retiro..."
+        );
+
+
+        const prepared =
+            await prepareTransaction(
 
                 "withdrawDonations",
 
                 [
 
-                    normalizedDestination,
+                    destination,
 
                     amount
 
@@ -2299,90 +2970,56 @@ async function withdrawToAddress() {
 
 
         // ==========================================
-        // SIMULAR + GAS
-        //
-        // RPC EXTERNO
-        // ==========================================
-
-        setStatus(
-            "🔎 Simulando retiro..."
-        );
-
-
-        const gasLimit =
-            await prepareTransaction(
-                data
-            );
-
-
-        // ==========================================
-        // TRUST WALLET
+        // WALLET
         // ==========================================
 
         setStatus(
 
-            "🔐 Confirma en Trust Wallet el envío de "
-
-            +
-
-            amountText
-
-            +
-
-            " USDC."
+            `🔐 Confirma en Trust Wallet el envío de ${amountRaw} USDC.`
 
         );
 
 
         const txHash =
-            await sendWithTrustWallet(
+            await sendTransaction(
 
-                data,
+                prepared.data,
 
-                gasLimit
+                prepared.gasLimit
 
             );
 
 
-        console.log(
-            "TX hash:",
+        // ==========================================
+        // CONFIRMAR
+        // ==========================================
+
+        await waitForTransaction(
             txHash
         );
 
-
-        // ==========================================
-        // CONFIRMACIÓN
-        // ==========================================
-
-        await waitTransaction(
-            txHash
-        );
-
-
-        // ==========================================
-        // ACTUALIZAR
-        // ==========================================
 
         await loadContractData();
 
 
-        amountEl.value =
+        amountInput.value =
             "";
 
 
         setStatusHTML(
 
-            `✅ <strong>Retiro completado.</strong>
+            `
+            ✅ <strong>Retiro completado.</strong>
 
             <br><br>
 
-            Cantidad:<br>
-            ${amountText} USDC
+            Cantidad:
+            ${amountRaw} USDC
 
             <br><br>
 
-            Destino:<br>
-            ${normalizedDestination}
+            Destino:
+            ${destination}
 
             <br><br>
 
@@ -2391,8 +3028,9 @@ async function withdrawToAddress() {
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Ver transacción en Etherscan
-            </a>`,
+                Ver en Etherscan
+            </a>
+            `,
 
             "success"
 
@@ -2402,23 +3040,22 @@ async function withdrawToAddress() {
 
     catch (error) {
 
-        console.error(
-            "WITHDRAW ERROR:",
-            error
-        );
-
-
         setStatus(
+
             "❌ " +
-            getErrorMessage(error),
+            getErrorMessage(
+                error
+            ),
+
             "error"
+
         );
 
     }
 
     finally {
 
-        isWithdrawing =
+        isSending =
             false;
 
 
@@ -2433,167 +3070,171 @@ async function withdrawToAddress() {
 // RETIRAR TODO
 // ======================================================
 
-async function withdrawAll() {
+async function withdrawEverything() {
 
-    if (isWithdrawing) {
+    if (isSending) {
         return;
     }
 
 
     try {
 
-        isWithdrawing =
+        isSending =
             true;
 
 
         updateButtons();
 
 
-        if (
-            !connectedAddress ||
-            !walletEthereum
-        ) {
-
-            throw new Error(
-                "Primero conecta Trust Wallet."
-            );
-
-        }
+        setStatus(
+            "Validando retiro total..."
+        );
 
 
-        // ==========================================
-        // DATOS
-        // ==========================================
-
-        await loadContractData();
+        await validateWithdrawalBase();
 
 
-        if (
-            connectedAddress.toLowerCase()
-            !==
-            contractOwner.toLowerCase()
-        ) {
-
-            throw new Error(
-                "Solo el owner puede retirar."
-            );
-
-        }
-
-
-        const balance =
-            await readContract
-                .getContractBalance();
-
-
-        if (
-            balance === 0n
-        ) {
-
-            throw new Error(
-                "El contrato no tiene USDC."
-            );
-
-        }
-
-
-        const formatted =
+        const formattedBalance =
             ethers.formatUnits(
 
-                balance,
+                contractBalance,
 
-                USDC_DECIMALS
-
-            );
-
-
-        console.log(
-            "======================================"
-        );
-
-        console.log(
-            "💰 RETIRO TOTAL"
-        );
-
-        console.log(
-            "Cantidad:",
-            formatted,
-            "USDC"
-        );
-
-        console.log(
-            "Destino:",
-            contractOwner
-        );
-
-        console.log(
-            "======================================"
-        );
-
-
-        // ==========================================
-        // DATA
-        // ==========================================
-
-        const data =
-            createTransactionData(
-
-                "withdrawAll",
-
-                []
+                tokenDecimals
 
             );
 
 
         // ==========================================
-        // SIMULAR
+        // PRIMERO WITHDRAW ALL
+        // ==========================================
+
+        let prepared;
+
+
+        try {
+
+            setStatus(
+                "🔎 Verificando withdrawAll()..."
+            );
+
+
+            prepared =
+                await prepareTransaction(
+
+                    "withdrawAll",
+
+                    []
+
+                );
+
+
+            console.log(
+                "✅ withdrawAll disponible"
+            );
+
+        }
+
+        catch (withdrawAllError) {
+
+            // ======================================
+            // FALLBACK
+            //
+            // Si withdrawAll del contrato desplegado
+            // no funciona pero withdrawDonations sí,
+            // retiramos TODO mediante
+            // withdrawDonations(owner,balance).
+            // ======================================
+
+            console.warn(
+                "withdrawAll falló. Probando withdrawDonations...",
+                withdrawAllError
+            );
+
+
+            setStatus(
+                "withdrawAll no pudo simularse. Probando método alternativo..."
+            );
+
+
+            try {
+
+                prepared =
+                    await prepareTransaction(
+
+                        "withdrawDonations",
+
+                        [
+
+                            contractOwner,
+
+                            contractBalance
+
+                        ]
+
+                    );
+
+
+                console.log(
+                    "✅ Método alternativo válido"
+                );
+
+            }
+
+            catch (alternativeError) {
+
+                throw new Error(
+
+                    "Ninguna función de retiro puede ejecutarse. "
+
+                    +
+
+                    "withdrawAll: "
+
+                    +
+
+                    getErrorMessage(
+                        withdrawAllError
+                    )
+
+                    +
+
+                    " | withdrawDonations: "
+
+                    +
+
+                    getErrorMessage(
+                        alternativeError
+                    )
+
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // CONFIRMAR
         // ==========================================
 
         setStatus(
-            "🔎 Simulando retiro total..."
-        );
 
-
-        const gasLimit =
-            await prepareTransaction(
-                data
-            );
-
-
-        // ==========================================
-        // TRUST WALLET
-        // ==========================================
-
-        setStatus(
-
-            "🔐 Confirma en Trust Wallet el retiro de "
-
-            +
-
-            formatted
-
-            +
-
-            " USDC."
+            `🔐 Confirma en Trust Wallet el retiro de ${formattedBalance} USDC.`
 
         );
 
 
         const txHash =
-            await sendWithTrustWallet(
+            await sendTransaction(
 
-                data,
+                prepared.data,
 
-                gasLimit
+                prepared.gasLimit
 
             );
 
 
-        // ==========================================
-        // CONFIRMACIÓN
-        // ==========================================
-
-        await waitTransaction(
+        await waitForTransaction(
             txHash
         );
 
@@ -2603,11 +3244,12 @@ async function withdrawAll() {
 
         setStatusHTML(
 
-            `✅ <strong>Retiro total completado.</strong>
+            `
+            ✅ <strong>Retiro total confirmado.</strong>
 
             <br><br>
 
-            ${formatted} USDC
+            ${formattedBalance} USDC
 
             <br><br>
 
@@ -2625,7 +3267,8 @@ async function withdrawAll() {
                 rel="noopener noreferrer"
             >
                 Ver transacción en Etherscan
-            </a>`,
+            </a>
+            `,
 
             "success"
 
@@ -2635,27 +3278,66 @@ async function withdrawAll() {
 
     catch (error) {
 
-        console.error(
-            "WITHDRAW ALL ERROR:",
-            error
-        );
-
-
         setStatus(
+
             "❌ " +
-            getErrorMessage(error),
+            getErrorMessage(
+                error
+            ),
+
             "error"
+
         );
 
     }
 
     finally {
 
-        isWithdrawing =
+        isSending =
             false;
 
 
         updateButtons();
+
+    }
+
+}
+
+
+// ======================================================
+// MAX
+// ======================================================
+
+async function setMaximum() {
+
+    try {
+
+        await loadContractData();
+
+
+        amountInput.value =
+            ethers.formatUnits(
+
+                contractBalance,
+
+                tokenDecimals
+
+            );
+
+    }
+
+    catch (error) {
+
+        setStatus(
+
+            "❌ " +
+            getErrorMessage(
+                error
+            ),
+
+            "error"
+
+        );
 
     }
 
@@ -2675,50 +3357,31 @@ async function refreshData() {
 
 
         setStatus(
-            "Actualizando datos..."
+            "Actualizando..."
         );
 
 
         await loadContractData();
 
 
-        if (
-            connectedAddress &&
-            contractOwner &&
-            connectedAddress.toLowerCase()
-            ===
-            contractOwner.toLowerCase()
-        ) {
-
-            setStatus(
-                "✅ Información actualizada.",
-                "success"
-            );
-
-        }
-
-        else {
-
-            setStatus(
-                "✅ Información del contrato actualizada."
-            );
-
-        }
+        setStatus(
+            "✅ Datos actualizados.",
+            "success"
+        );
 
     }
 
     catch (error) {
 
-        console.error(
-            "REFRESH ERROR:",
-            error
-        );
-
-
         setStatus(
+
             "❌ " +
-            getErrorMessage(error),
+            getErrorMessage(
+                error
+            ),
+
             "error"
+
         );
 
     }
@@ -2734,12 +3397,24 @@ async function refreshData() {
 
 
 // ======================================================
-// RESTAURAR CONEXIÓN
+// RESTAURAR SESIÓN SIN POPUP
 // ======================================================
 
-async function restoreWalletConnection() {
+async function restoreConnection() {
 
     try {
+
+        requestEip6963Providers();
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    150
+                )
+        );
+
 
         walletEthereum =
             findTrustWalletProvider();
@@ -2747,8 +3422,9 @@ async function restoreWalletConnection() {
 
         if (!walletEthereum) {
 
-            console.log(
-                "Trust Wallet no detectado."
+            setStatus(
+                "✅ Contrato cargado. Pulsa Conectar Trust Wallet.",
+                "success"
             );
 
 
@@ -2757,12 +3433,11 @@ async function restoreWalletConnection() {
         }
 
 
-        // ==========================================
-        // IMPORTANTE
-        //
-        // eth_accounts
-        // NO eth_requestAccounts
-        // ==========================================
+        installWalletListeners();
+
+
+        // IMPORTANTE:
+        // eth_accounts NO abre popup.
 
         const accounts =
             await walletEthereum.request({
@@ -2778,8 +3453,37 @@ async function restoreWalletConnection() {
             accounts.length === 0
         ) {
 
-            console.log(
-                "Trust Wallet detectado pero no conectado."
+            setStatus(
+                "✅ Trust Wallet detectado. Pulsa Conectar.",
+                "success"
+            );
+
+
+            return;
+
+        }
+
+
+        const chain =
+            BigInt(
+
+                await walletEthereum.request({
+
+                    method:
+                        "eth_chainId"
+
+                })
+
+            );
+
+
+        if (
+            chain !== 1n
+        ) {
+
+            setStatus(
+                "⚠️ Trust Wallet detectado. Selecciona Ethereum Mainnet.",
+                "warning"
             );
 
 
@@ -2798,51 +3502,17 @@ async function restoreWalletConnection() {
             connectedAddress;
 
 
-        const chainHex =
-            await walletEthereum.request({
-
-                method:
-                    "eth_chainId"
-
-            });
-
-
-        if (
-            BigInt(chainHex)
-            !==
-            EXPECTED_CHAIN_ID
-        ) {
-
-            setStatus(
-                "⚠️ Trust Wallet está conectado pero no está en Ethereum Mainnet.",
-                "warning"
-            );
-
-
-            return;
-
-        }
-
-
         walletProvider =
             new ethers.BrowserProvider(
                 walletEthereum
             );
 
 
-        signer =
-            await walletProvider
-                .getSigner();
-
-
-        await loadContractData();
-
-
         if (
-            contractOwner &&
-            connectedAddress.toLowerCase()
-            ===
-            contractOwner.toLowerCase()
+            addressesEqual(
+                connectedAddress,
+                contractOwner
+            )
         ) {
 
             connectBtn.textContent =
@@ -2853,7 +3523,7 @@ async function restoreWalletConnection() {
 
 
             setStatus(
-                "✅ Trust Wallet restaurada. Eres el owner.",
+                "✅ Trust Wallet conectada. Eres el owner.",
                 "success"
             );
 
@@ -2862,7 +3532,7 @@ async function restoreWalletConnection() {
         else {
 
             setStatus(
-                "⚠️ La cuenta conectada no es el owner.",
+                "⚠️ La wallet conectada no es el owner.",
                 "warning"
             );
 
@@ -2876,13 +3546,9 @@ async function restoreWalletConnection() {
     catch (error) {
 
         console.error(
-            "RESTORE WALLET ERROR:",
+            "RESTORE ERROR:",
             error
         );
-
-
-        // Una falla de Trust Wallet aquí
-        // NO debe destruir las lecturas RPC.
 
     }
 
@@ -2890,7 +3556,7 @@ async function restoreWalletConnection() {
 
 
 // ======================================================
-// EVENTOS
+// BOTONES
 // ======================================================
 
 connectBtn.addEventListener(
@@ -2915,7 +3581,7 @@ maxBtn.addEventListener(
 
     "click",
 
-    useMax
+    setMaximum
 
 );
 
@@ -2924,7 +3590,7 @@ withdrawBtn.addEventListener(
 
     "click",
 
-    withdrawToAddress
+    withdrawPartial
 
 );
 
@@ -2933,82 +3599,18 @@ withdrawAllBtn.addEventListener(
 
     "click",
 
-    withdrawAll
+    withdrawEverything
 
 );
 
 
-// ======================================================
-// LISTENERS TRUST WALLET
-// ======================================================
+diagnosticBtn.addEventListener(
 
-function initializeWalletListeners() {
+    "click",
 
-    walletEthereum =
-        findTrustWalletProvider();
+    runDiagnostic
 
-
-    if (!walletEthereum) {
-
-        return;
-
-    }
-
-
-    // Removemos listeners nuestros si existieran
-    // solamente si el provider lo soporta.
-
-    try {
-
-        walletEthereum.removeListener(
-
-            "accountsChanged",
-
-            handleAccountsChanged
-
-        );
-
-
-        walletEthereum.removeListener(
-
-            "chainChanged",
-
-            handleChainChanged
-
-        );
-
-    }
-
-    catch {
-        // Ignorar
-    }
-
-
-    // Registrar una sola vez
-
-    walletEthereum.on(
-
-        "accountsChanged",
-
-        handleAccountsChanged
-
-    );
-
-
-    walletEthereum.on(
-
-        "chainChanged",
-
-        handleChainChanged
-
-    );
-
-
-    console.log(
-        "✅ Listeners Trust Wallet registrados"
-    );
-
-}
+);
 
 
 // ======================================================
@@ -3017,53 +3619,55 @@ function initializeWalletListeners() {
 
 async function start() {
 
+    contractEl.textContent =
+        CONTRACT_ADDRESS;
+
+
     try {
 
-        contractAddressEl.textContent =
-            CONTRACT_ADDRESS;
+        requestEip6963Providers();
 
 
-        // ==========================================
-        // 1. RPC EXTERNO
-        // ==========================================
+        await initializeRpc();
 
-        setStatus(
-            "Conectando al RPC Ethereum..."
-        );
-
-
-        await initializeReadProvider();
-
-
-        // ==========================================
-        // 2. DATOS CONTRATO
-        // ==========================================
 
         await loadContractData();
 
 
-        // ==========================================
-        // 3. TRUST WALLET
-        // ==========================================
-
-        initializeWalletListeners();
+        await restoreConnection();
 
 
-        // ==========================================
-        // 4. RESTAURAR SIN POPUP
-        // ==========================================
+        console.log(
+            "======================================"
+        );
 
-        await restoreWalletConnection();
+        console.log(
+            "✅ APLICACIÓN INICIALIZADA"
+        );
 
+        console.log(
+            "Contrato:",
+            CONTRACT_ADDRESS
+        );
 
-        if (!connectedAddress) {
+        console.log(
+            "Owner:",
+            contractOwner
+        );
 
-            setStatus(
-                "✅ Contrato conectado. Pulsa Conectar Trust Wallet.",
-                "success"
-            );
+        console.log(
+            "Token:",
+            tokenAddress
+        );
 
-        }
+        console.log(
+            "Saldo:",
+            contractBalance.toString()
+        );
+
+        console.log(
+            "======================================"
+        );
 
     }
 
@@ -3076,9 +3680,14 @@ async function start() {
 
 
         setStatus(
+
             "❌ " +
-            getErrorMessage(error),
+            getErrorMessage(
+                error
+            ),
+
             "error"
+
         );
 
     }
